@@ -22,14 +22,41 @@ $(document).ready(function(){
   
   //pull data input from html on submit click
   $(document).on("click", "#submitTrain", function(event){
-    event.preventdefault();
+    event.preventDefault();
 
     var trainName = $("#trainNameInput").val().trim();
-    var destination = $("#destinationInput").val().trim();
-    var firstTime = $("#firstTimeInput").val().trim();
-    var frequency = $("#frequencyInput").val().trim();
+    var trainDestination = $("#destinationInput").val().trim();
+    var trainFirstTime = $("#firstTimeInput").val().trim();
+    var trainFrequency = $("#frequencyInput").val().trim();
 
     console.log("checkpoint2");
+
+    var newTrain = {
+      name: trainName,
+      destination: trainDestination,
+      time: trainFirstTime,
+      frequency: trainFrequency
+    };
+    
+    //update the database
+    database.ref().push(newTrain);
+
+    $("input").val("");
+    console.log(newTrain);
+  });
+
+  //pull information from database and print to the HTML
+  database.ref().on("child_added", function(childSnapshot, prevChildKey) {
+    console.log(childSnapshot.val());
+
+    var trainName = childSnapshot.val().name;
+    var trainDestination = childSnapshot.val().destination;
+    var trainFirstTime = childSnapshot.val().time;
+    var trainFrequency = childSnapshot.val().frequency;
+
+    console.log(trainName);
+
+    $("#infoTable").append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>" + trainFrequency + "</td><td>");
   });
 
 
