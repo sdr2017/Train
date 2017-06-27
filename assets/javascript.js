@@ -27,7 +27,7 @@ $(document).ready(function(){
     var trainName = $("#trainNameInput").val().trim();
     var trainDestination = $("#destinationInput").val().trim();
     var trainFirstTime = moment($("#firstTimeInput").val().trim(), "HH:mm").format("X");
-    var trainFrequency = moment($("#frequencyInput").val().trim(), "mm").format("X");
+    var trainFrequency = parseInt($("#frequencyInput").val().trim());
 
 
     var newTrain = {
@@ -55,8 +55,8 @@ $(document).ready(function(){
 
     var differenceTimes = moment().diff(moment.unix(trainFirstTime, "X"), "minutes");
 
-
   var tRemainder = differenceTimes % trainFrequency;
+  console.log(trainFirstTime);
   console.log(differenceTimes);
   console.log(trainFrequency);
   console.log(tRemainder);
@@ -64,10 +64,16 @@ $(document).ready(function(){
   var tMinutes = trainFrequency - tRemainder;
 
   // To calculate the arrival time, add the tMinutes to the currrent time
-  var tArrival = moment().add(tMinutes, "m").format("hh:mm A"); 
+  var tArrival = moment().add(tMinutes, "m").format("hh:mm"); 
+  console.log(tArrival);
+
+  var now = moment().format("hh:mm");
+  console.log(now);
+  var minutesToArrival = (tArrival - now);
+  console.log(minutesToArrival);
 
 
-    $("#infoTable").append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>" + trainFrequency + "</td><td>");
+    $("#infoTable").append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>" + trainFrequency + "</td><td>" + tArrival + "</td><td>" + tRemainder + "</td><td>");
   });
 
   console.log(moment().toString());
